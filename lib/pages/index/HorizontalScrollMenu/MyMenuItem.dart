@@ -77,7 +77,7 @@ class _MyHorizontalMenuState extends State<MyHorizontalMenu> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 74,
+      height: 76,
       child: ListView.builder(
         itemCount: menuItems.length,
         scrollDirection: Axis.horizontal,

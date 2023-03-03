@@ -75,238 +75,200 @@ class IndexPage extends BaseView<IndexPageController> {
 
   @override
   Widget builder(BuildContext context) {
-    double x = 0, y = 0;
-    // LinkedHashMap<String, dynamic> testData = LinkedHashMap.from({
-    //   '1': {
-    //     'id': '1',
-    //     'icon': Icons.home,
-    //     'cardName': '加好友',
-    //     'func': () => print('Home pressed')
-    //   },
-    //   '2': {
-    //     'id': '2',
-    //     'icon': Icons.settings,
-    //     'cardName': '创单位',
-    //     'func': () => print('Settings pressed')
-    //   },
-    //   '3': {
-    //     'id': '3',
-    //     'icon': Icons.person,
-    //     'cardName': '邀成员',
-    //     'func': () => print('Profile pressed')
-    //   },
-    //   '4': {
-    //     'id': '4',
-    //     'icon': Icons.notifications,
-    //     'cardName': '建应用',
-    //     'func': () => print('Notifications pressed')
-    //   },
-    //   '5': {
-    //     'id': '5',
-    //     'icon': Icons.settings,
-    //     'cardName': '逛商店',
-    //     'func': () => print('Settings pressed')
-    //   },
-    //   '6': {
-    //     'id': '6',
-    //     'icon': Icons.person,
-    //     'cardName': '邀成员',
-    //     'func': () => print('Profile pressed')
-    //   },
-    //   '7': {
-    //     'id': '7',
-    //     'icon': Icons.notifications,
-    //     'cardName': '建应用',
-    //     'func': () => print('Notifications pressed')
-    //   },
-    // });
-
     return Scaffold(
-      drawer: Drawer(
-        width: MediaQuery.of(context).size.width,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: XColors.navigatorBgColor,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.file_download_done_outlined),
-                        onPressed: () {
-                          Navigator.pop(context); // 关闭Drawer
-                        },
-                      ),
-                      const Text(
-                        '今天还没打卡哦',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 212.h,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.pop(context); // 关闭Drawer
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 22.h,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 22.h,
-                      ),
-                      GFAvatar(
-                          size: GFSize.LARGE,
-                          backgroundImage: NetworkImage(
-                              'https://s3.bmp.ovh/imgs/2023/02/28/3d1e012ec88ff534.jpg'),
-                          shape: GFAvatarShape.circle),
-                      SizedBox(
-                        width: 42.h,
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '昵称：凌志强',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            '等级：999级',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            '个性签名：物有本末，事有始终。',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.qr_code_scanner_outlined),
-                        onPressed: () {
-                          // Navigator.pop(context); // 关闭Drawer
-                          Get.toNamed(Routers.scanning);
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text('收藏'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.wallet),
-              title: const Text('钱包'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.insert_drive_file_sharp),
-              title: const Text('文件'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.source),
-              title: const Text('资源'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        backgroundColor: XColors.navigatorBgColor,
-        leading: Builder(builder: (context) {
-          return GestureDetector(
-            onPanDown: (position) {
-              x = position.globalPosition.dx;
-              y = position.globalPosition.dy;
-            },
-            onTap: () {
-              showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(
-                  x - 20.w,
-                  y + 20.h,
-                  x + 20.w,
-                  y + 40.h,
-                ),
-                items: _popupMenus(context),
-              );
-            },
-            // onTap: () {
-            //   // 处理单击事件
-            //   Scaffold.of(context).openDrawer();
+      drawer: _drawer(context),
+      appBar: _appbar(),
+      body: _body(),
+    );
+  }
 
-            //   print('处理单击事件Leading button long pressed');
-            // },
-            onLongPress: () {
-              // 处理长按事件
-              print('处理长按事件Leading button long pressed');
-              Scaffold.of(context).openDrawer();
-              // Get.toNamed(Routers.mineUnit);
-            },
-            child: Icon(
-              Icons.menu,
-              color: Colors.black,
+  Widget _drawer(BuildContext context) {
+    return Drawer(
+      width: MediaQuery.of(context).size.width,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: XColors.navigatorBgColor,
             ),
-          );
-        }),
-        // automaticallyImplyLeading: false,
-        actions: <Widget>[
-          OperationBar()
-          // IconButton(
-          //   icon: const Icon(Icons.search),
-          //   tooltip: '搜索',
-          //   onPressed: () {
-          //     Get.toNamed(Routers.search);
-          //   },
-          // ),
-          // IconButton(
-          //   icon: const Icon(Icons.add),
-          //   tooltip: '增加',
-          //   onPressed: () {
-          //     Get.toNamed(Routers.contact);
-          //   },
-          // ),
-          // IconButton(
-          //   icon: const Icon(Icons.more_horiz_outlined),
-          //   tooltip: '更多',
-          //   onPressed: () {},
-          // ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.file_download_done_outlined),
+                      onPressed: () {
+                        Navigator.pop(context); // 关闭Drawer
+                      },
+                    ),
+                    const Text(
+                      '今天还没打卡哦',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 212.h,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context); // 关闭Drawer
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 22.h,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 22.h,
+                    ),
+                    GFAvatar(
+                        size: GFSize.LARGE,
+                        backgroundImage: NetworkImage(
+                            'https://s3.bmp.ovh/imgs/2023/02/28/3d1e012ec88ff534.jpg'),
+                        shape: GFAvatarShape.circle),
+                    SizedBox(
+                      width: 42.h,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          '昵称：凌志强',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          '等级：999级',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          '个性签名：物有本末，事有始终。',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.qr_code_scanner_outlined),
+                      onPressed: () {
+                        // Navigator.pop(context); // 关闭Drawer
+                        Get.toNamed(Routers.scanning);
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.favorite),
+            title: const Text('收藏'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.wallet),
+            title: const Text('钱包'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.insert_drive_file_sharp),
+            title: const Text('文件'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.source),
+            title: const Text('资源'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ],
       ),
-      body: ListView(
+    );
+  }
+
+  PreferredSizeWidget _appbar() {
+    double x = 0, y = 0;
+    return AppBar(
+      backgroundColor: XColors.navigatorBgColor,
+      leading: Builder(builder: (context) {
+        return GestureDetector(
+          onPanDown: (position) {
+            x = position.globalPosition.dx;
+            y = position.globalPosition.dy;
+          },
+          onTap: () {
+            print('处理长按事件Leading button long pressed');
+            Scaffold.of(context).openDrawer();
+            // Get.toNamed(Routers.mineUnit);
+          },
+          onLongPress: () {
+            // 处理长按事件
+            showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(
+                x - 20.w,
+                y + 20.h,
+                x + 20.w,
+                y + 40.h,
+              ),
+              items: _popupMenus(context),
+            );
+          },
+          child: Icon(
+            Icons.menu,
+            color: Colors.black,
+          ),
+        );
+      }),
+      // automaticallyImplyLeading: false,
+      actions: <Widget>[
+        OperationBar()
+        // IconButton(
+        //   icon: const Icon(Icons.search),
+        //   tooltip: '搜索',
+        //   onPressed: () {
+        //     Get.toNamed(Routers.search);
+        //   },
+        // ),
+        // IconButton(
+        //   icon: const Icon(Icons.add),
+        //   tooltip: '增加',
+        //   onPressed: () {
+        //     Get.toNamed(Routers.contact);
+        //   },
+        // ),
+        // IconButton(
+        //   icon: const Icon(Icons.more_horiz_outlined),
+        //   tooltip: '更多',
+        //   onPressed: () {},
+        // ),
+      ],
+    );
+  }
+
+Widget _body(){
+  return ListView(
           scrollDirection: Axis.vertical,
           // shrinkWrap: true,
           // padding: const EdgeInsets.all(20.0),
@@ -348,10 +310,8 @@ class IndexPage extends BaseView<IndexPageController> {
               ),
             ),
             _dataMonitoring(),
-          ]),
-    );
-  }
-
+          ]);
+}
   List<PopupMenuEntry> _popupMenus(BuildContext context) {
     return [
       PopupMenuItem(

@@ -111,9 +111,10 @@ class SearchPage extends GetView<SearchController> {
     );
   }
 
+// 高度大约280会出现底部溢出
   Widget _tabView() {
     return GFTabBarView(
-      height: 400,
+      height: 280,
       controller: controller.tabController,
       children: controller.searchItems
           .map((item) => Container(
