@@ -82,7 +82,7 @@ class MessageItemWidget extends GetView<ChatController> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _avatarContainer,
+            // _avatarContainer,
             Padding(padding: EdgeInsets.only(left: 20.w)),
             Expanded(child: Obx(() => _content)),
           ],
@@ -91,27 +91,27 @@ class MessageItemWidget extends GetView<ChatController> {
     );
   }
 
-  Widget get _avatarContainer {
-    return Obx(() {
-      var noRead = chat.noReadCount.value;
-      return TeamAvatar(
-        info: TeamTypeInfo(share: chat.shareInfo),
-        children: [
-          Visibility(
-            visible: noRead > 0,
-            child: Align(
-              alignment: Alignment.topRight,
-              child: GFBadge(
-                shape: GFBadgeShape.circle,
-                color: Colors.red,
-                child: Text("${noRead > 99 ? "99+" : noRead}"),
-              ),
-            ),
-          )
-        ],
-      );
-    });
-  }
+  // Widget get _avatarContainer {
+  //   return Obx(() {
+  //     var noRead = chat.noReadCount.value;
+  //     return TeamAvatar(
+  //       info: TeamTypeInfo(share: chat.shareInfo),
+  //       children: [
+  //         Visibility(
+  //           visible: noRead > 0,
+  //           child: Align(
+  //             alignment: Alignment.topRight,
+  //             child: GFBadge(
+  //               shape: GFBadgeShape.circle,
+  //               color: Colors.red,
+  //               child: Text("${noRead > 99 ? "99+" : noRead}"),
+  //             ),
+  //           ),
+  //         )
+  //       ],
+  //     );
+  //   });
+  // }
 
   Widget get _content {
     var target = chat.target;
