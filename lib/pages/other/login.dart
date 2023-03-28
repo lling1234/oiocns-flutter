@@ -10,6 +10,7 @@ import 'package:orginone/util/load_image.dart';
 import 'package:orginone/util/local_store.dart';
 import 'package:permission_handler/permission_handler.dart';
 // TODO 拦截器 navigatorObservers: [routeObserver],
+// TODO 不用每次登录，只需登录一次
 class LoginPage extends GetView<LoginController> {
   const LoginPage({Key? key}) : super(key: key);
 
