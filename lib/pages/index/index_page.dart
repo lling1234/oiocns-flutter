@@ -17,12 +17,54 @@ import 'package:orginone/routers.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'widgets/body_widget.dart';
 import 'widgets/drawer_widget.dart';
+
 // TODO 请求接口，接收数据，转化为 LinkedHashMap对象
 //调试设备：pixel_6_pro(1440×3120)
 /// 设置首页
 @immutable
 class IndexPage extends BaseView<IndexPageController> {
   final Logger log = Logger("IndexPage");
+
+  final List<Tab> tabs = [
+    const Tab(
+      text: '首页',
+    ),
+    const Tab(
+      text: '控制台',
+    ),
+    const Tab(
+      text: '看板',
+    ),
+    const Tab(
+      text: '新闻',
+    ),
+    const Tab(
+      text: '共享',
+    ),
+    const Tab(
+      text: '交易',
+    ),
+  ];
+  final List<Widget> tabViews = [
+    Container(
+      child: const Text("首页home"),
+    ),
+    Container(
+      child: const Text("控制台home"),
+    ),
+    Container(
+      child: const Text("看板home"),
+    ),
+    Container(
+      child: const Text("新闻home"),
+    ),
+    Container(
+      child: const Text("共享home"),
+    ),
+    Container(
+      child: const Text("交易home"),
+    ),
+  ];
 
   @override
   bool isUseScaffold() {
@@ -34,6 +76,11 @@ class IndexPage extends BaseView<IndexPageController> {
     return LoadStatusX.success;
   }
 
+  @override
+  void dispose() {
+    controller.tabController.dispose();
+  }
+
 // TODO 常用应用，超过五个字屏幕会越界
   IndexPage({Key? key}) : super(key: key) {}
 
@@ -42,8 +89,10 @@ class IndexPage extends BaseView<IndexPageController> {
     return Scaffold(
       // drawer: CustomDrawer(),
       drawer: DrawerwWidget(),
-      appBar: _appbar(),
-      body: BodyWidget(),
+      appBar: _portalAppbar(),
+      body: _portalBody(),
+      // appBar: _appbar(),
+      // body: BodyWidget(),
     );
   }
 
@@ -181,6 +230,22 @@ class IndexPage extends BaseView<IndexPageController> {
           ),
         ],
       ),
+    );
+  }
+
+  PreferredSizeWidget _portalAppbar() {
+    return AppBar(
+      bottom: TabBar(
+        controller: controller.tabController,
+        tabs: tabs,
+      ),
+    );
+  }
+
+  Widget _portalBody() {
+    return TabBarView(
+      controller: controller.tabController,
+      children: tabViews,
     );
   }
 
@@ -328,7 +393,20 @@ class IndexPage extends BaseView<IndexPageController> {
   }
 }
 
-class IndexPageController extends BaseController {}
+class IndexPageController extends BaseController {
+  late TabController tabController;
+
+  @override
+  void initState() async {
+    tabController = TabController(length: 3, vsync: AnimatedListState());
+  }
+
+  @override
+  void dispose() async {
+    tabController.dispose();
+    super.dispose();
+  }
+}
 
 class IndexPageBinding extends Bindings {
   @override
